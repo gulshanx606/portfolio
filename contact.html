@@ -302,21 +302,44 @@
         });
     </script>
     
-    <!-- Leaflet JS Library - Loaded at end for proper initialization -->
+    <!-- Leaflet JS Library -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-+L19N741GOoJWItNnBg34hLSH3NAK+Q7YsHSzichJ+jLtLY0cJayTlk+lyHVOkR2l" crossorigin="anonymous"></script>
     
-    <!-- Leaflet Map Init - Runs after all DOM and libraries are loaded -->
+    <!-- Leaflet Map Init - Run after all scripts load -->
     <script>
-      var map = L.map('mapBox').setView([19.0760, 72.8777], 13);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-      
-      L.marker([19.0760, 72.8777])
-        .addTo(map)
-        .bindPopup('Mumbai, Maharashtra, India')
-        .openPopup();
+      try {
+        // Check if Leaflet library is loaded
+        if (typeof L === 'undefined') {
+          alert('Leaflet library not loaded');
+          throw new Error('Leaflet library not loaded');
+        }
+        
+        // Check if map container exists
+        var container = document.getElementById('mapBox');
+        if (!container) {
+          throw new Error('mapBox container not found');
+        }
+        
+        // Initialize map
+        var map = L.map('mapBox').setView([19.0760, 72.8777], 13);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19
+        }).addTo(map);
+        
+        // Add marker for Mumbai
+        L.marker([19.0760, 72.8777])
+          .addTo(map)
+          .bindPopup('Mumbai, Maharashtra, India')
+          .openPopup();
+          
+        console.log('Map initialized successfully');
+      } catch (error) {
+        console.error('Map initialization failed:', error);
+        document.getElementById('mapBox').innerHTML = '<div style="padding: 20px; text-align: center; color: red;"><strong>Map Failed to Load</strong><br>' + error.message + '</div>';
+      }
     </script>
 </body>
 
