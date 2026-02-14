@@ -11,16 +11,14 @@
 	<link rel="icon" type="image/png" href="img/favicon.png">
 	<title>Contact - Gulshan Kumar | Data Engineer</title>
 	<!-- Bootstrap CSS -->
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-ILEu33IchW2+sHD+dMSrAh9Rh5LfnlrVstrPVuhLJJBlueDQJCIKULS3l0KTkabS" crossorigin="anonymous"/>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-+L19N741GOoJWItNnBg34hLSH3NAK+Q7YsHSzichJ+jLtLY0cJayTlk+lyHVOkR2l" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="vendors/linericon/style.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
 	<link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
+	<!-- Leaflet CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-ILEu33IchW2+sHD+dMSrAh9Rh5LfnlrVstrPVuhLJJBlueDQJCIKULS3l0KTkabS" crossorigin="anonymous"/>
 	<!-- main css -->
 	<link rel="stylesheet" href="css/style.css">
 	<style>
@@ -177,32 +175,51 @@
  <!-- Map container -->
     <div class="row mt-4">
       <div class="col-lg-12">
-        <div id="mapBox" class="mapBox"></div>
+        <div id="mapBox" class="mapBox" style="height: 420px; width: 100%; background: #f0f0f0; border-radius: 8px; overflow: hidden;"></div>
       </div>
     </div>
   </div>
 </section>
-
+<!-- Leaflet JS Library -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-+L19N741GOoJWItNnBg34hLSH3NAK+Q7YsHSzichJ+jLtLY0cJayTlk+lyHVOkR2l" crossorigin="anonymous"></script>
 <!-- Leaflet Map Init -->
 <script>
-  if (document.getElementById('mapBox')) {
-    document.addEventListener("DOMContentLoaded", function () {
-      try {
-        var map = L.map('mapBox').setView([19.0760, 72.8777], 12); // Mumbai
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          maxZoom: 19
-        }).addTo(map);
-
-        L.marker([19.0760, 72.8777])
-          .addTo(map)
-          .bindPopup('Mumbai, Maharashtra, India')
-          .openPopup();
-      } catch (e) {
-        console.error('Map error:', e);
-      }
-    });
+  // Wait for Leaflet library to load, then initialize map
+  function initializeMap() {
+    if (typeof L === 'undefined') {
+      // Leaflet not loaded yet, retry after 100ms
+      setTimeout(initializeMap, 100);
+      return;
+    }
+    
+    var mapBox = document.getElementById('mapBox');
+    if (!mapBox) return;
+    
+    try {
+      // Initialize map
+      var map = L.map('mapBox').setView([19.0760, 72.8777], 12);
+      
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      }).addTo(map);
+      
+      // Add marker
+      L.marker([19.0760, 72.8777])
+        .addTo(map)
+        .bindPopup('Mumbai, Maharashtra, India')
+        .openPopup();
+    } catch (e) {
+      console.error('Map initialization error:', e);
+    }
+  }
+  
+  // Initialize map when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeMap);
+  } else {
+    initializeMap();
   }
 </script>
             </div>
