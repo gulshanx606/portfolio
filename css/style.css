@@ -3463,6 +3463,97 @@ h6 {
 .subscription .info.error {
   color: #ff6b6b; }
 
+/* Mobile: stack newsletter input and button for small screens */
+@media (max-width: 480px) {
+  .subscription_box .subscription {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .subscription_box .subscription input {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  /* Override inline width on the button (inline style uses width:160px) */
+  .subscription_box .primary-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 16px !important;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-sizing: border-box;
+  }
+  /* Ensure input appears above the button */
+  .subscription_box .subscription input { order: 1; }
+  .subscription_box .primary-btn { order: 2; }
+  .subscription_box .primary-btn .btn-text { display: inline-block; }
+}
+
+/* Fix: constrain input and button height on small screens */
+@media (max-width: 480px) {
+  .subscription_box .subscription input {
+    height: 48px !important;
+    line-height: 1.2 !important;
+    padding: 0 12px !important;
+    border-radius: 6px !important;
+    font-size: 0.95rem !important;
+    background: rgba(255,255,255,0.95) !important;
+  }
+  .subscription_box .primary-btn {
+    height: 44px !important;
+    line-height: 1 !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+  }
+  .subscription_box .primary-btn .btn-loader { transform: none !important; }
+}
+
+/* Stronger overrides for stubborn mobile overrides */
+@media (max-width: 480px) {
+  .subscription_box .subscription input,
+  .subscription_box .subscription input[type="email"],
+  #subscriberEmail {
+    display: block !important;
+    height: 44px !important;
+    max-height: 44px !important;
+    min-height: 44px !important;
+    line-height: 44px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    border-radius: 6px !important;
+    font-size: 0.95rem !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    background: rgba(255,255,255,0.95) !important;
+    border-width: 1px !important;
+  }
+  .subscription_box .subscription input::placeholder {
+    color: #666 !important;
+    line-height: 44px !important;
+  }
+  .subscription_box .primary-btn {
+    height: 44px !important;
+    max-height: 44px !important;
+    min-height: 44px !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    border-radius: 6px !important;
+    /* make button narrower and centered on very small screens */
+    width: 60% !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+}
+
 /* End Newsletter Area css
 ============================================================================================ */
 
