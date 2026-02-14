@@ -70,7 +70,7 @@ $(document).ready(function(){
                     window.EMAILJS_CONFIG.templateId,
                     form
                 ).then(function(response) {
-                    console.log('Owner notification sent!', response.status);
+                    // Removed: console.log('Owner notification sent!', response.status);
                     
                     // Send auto-reply to visitor (optional - if autoReplyTemplateId is configured)
                     if (window.EMAILJS_CONFIG.autoReplyTemplateId) {
@@ -85,7 +85,7 @@ $(document).ready(function(){
                                 message: $form.find('[name="message"]').val()
                             }
                         ).then(function() {
-                            console.log('Auto-reply sent to visitor!');
+                            // Removed: console.log('Auto-reply sent to visitor!');
                         }).catch(function(err) {
                             console.warn('Auto-reply failed (non-critical):', err);
                         });
@@ -103,7 +103,7 @@ $(document).ready(function(){
                     $('#successModal').modal('show');
                     
                 }, function(error) {
-                    console.log('FAILED...', error);
+                    // Removed: console.log('FAILED...', error);
                     
                     // Reset button state
                     $btnLoader.hide();
