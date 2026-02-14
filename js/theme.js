@@ -22,12 +22,12 @@
 	navbarFixed();
 
 	/*----------------------------------------------------*/
-	/*  MailChimp Slider
+	/*  MailChimp Slider - Disabled (Using EmailJS instead)
     /*----------------------------------------------------*/
-	function mailChimp() {
-		$('#mc_embed_signup').find('form').ajaxChimp();
-	}
-	mailChimp();
+	// function mailChimp() {
+	// 	$('#mc_embed_signup').find('form').ajaxChimp();
+	// }
+	// mailChimp();
 
 	$('select').niceSelect();
 	/* ---------------------------------------------
@@ -100,7 +100,8 @@
 	/*  Google map js
     /*----------------------------------------------------*/
 
-	if ($('#mapBox').length) {
+	// Skip GMaps initialization - using Leaflet instead
+	if ($('#mapBox').length && $('#mapBox').data('lat')) {
 		var $lat = $('#mapBox').data('lat');
 		var $lon = $('#mapBox').data('lon');
 		var $zoom = $('#mapBox').data('zoom');

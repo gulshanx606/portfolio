@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Content Security Policy -->
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: https:; connect-src 'self' https://api.emailjs.com https://tile.openstreetmap.org;">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.emailjs.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com https://tiles.stadiamaps.com;">
 	<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 	<link rel="icon" type="image/png" href="img/favicon.png">
 	<title>Gulshan Kumar | Data Engineer Portfolio</title>
@@ -230,12 +230,12 @@
            Bearing Void gathering light light his evening unto don't be afraid.
          </p>
          <div class="subcribe-form" id="mc_embed_signup">
-           <form novalidate class="subscription relative">
-             <input name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'" required type="email">
-             <button class="primary-btn hover d-inline" id="subscribeBtn" type="submit" style="position: relative; overflow: hidden; min-width: 140px;">
-               <span class="btn-text">Get Started</span>
-               <span class="btn-loader" style="display: none; color: #00ff9d; font-weight: bold;">
-                 <i class="fa fa-spinner fa-spin"></i> Sending...
+           <form novalidate class="subscription relative" id="subscriptionForm" onsubmit="return false;">
+             <input name="EMAIL" id="subscriberEmail" placeholder="Email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'" required type="email">
+             <button class="primary-btn hover d-inline" id="subscribeBtn" type="button" onclick="handleSubscribe()" style="position: relative; min-width: 160px; width: 160px; cursor: pointer; transition: all 0.3s ease; padding: 2px 20px; display: inline-flex; align-items: center; justify-content: center;">
+               <span class="btn-text" style="transition: opacity 0.3s ease;">Get Started</span>
+               <span class="btn-loader" style="position: absolute; display: none; visibility: hidden; opacity: 0; color: #1a1a1a; font-weight: 600; font-size: 15px; transition: opacity 0.3s ease; white-space: nowrap;">
+                 <i class="fa fa-circle-o-notch fa-spin" style="margin-right: 6px; font-size: 16px;"></i>Sending...
                </span>
              </button>
              <div class="info"></div>
@@ -267,70 +267,7 @@
   </div>
 </div>
 
-<!-- ✅ Script -->
-<script>
 
-
- document.querySelector(".subscription").addEventListener("submit", function (e) {
-   e.preventDefault();
-
-   const emailInput = this.querySelector("input[name='EMAIL']");
-   const email = emailInput.value.trim();
-   const $subscribeBtn = document.getElementById('subscribeBtn');
-   const $btnText = $subscribeBtn.querySelector('.btn-text');
-   const $btnLoader = $subscribeBtn.querySelector('.btn-loader');
-
-   if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-     document.getElementById('subscribeMessage').textContent = '⚠️ Please enter a valid email address.';
-     $('#subscribeModal').modal('show');
-     return;
-   }
-
-   // Show loader, disable button
-   $btnText.style.display = 'none';
-   $btnLoader.style.display = 'inline-block';
-   $subscribeBtn.disabled = true;
-
-   // Send subscription notification via EmailJS
-   emailjs.send(
-     window.EMAILJS_CONFIG.serviceId,
-     window.EMAILJS_CONFIG.templateId,
-     {
-       name: 'New Subscriber',
-       email: email,
-       phone: 'N/A',
-       service: 'Newsletter',
-       message: 'New subscriber email: ' + email
-     }
-   ).then(function(response) {
-     // Removed: console.log('Subscription successful!', response.status);
-     
-     // Reset button
-     $btnLoader.style.display = 'none';
-     $btnText.style.display = 'inline-block';
-     $subscribeBtn.disabled = false;
-     
-     // Clear input
-     emailInput.value = '';
-     
-     // Show success modal
-     document.getElementById('subscribeMessage').innerHTML = '🎉 <strong>Thank you!</strong><br>You have been subscribed to our newsletter.';
-     $('#subscribeModal').modal('show');
-     
-   }).catch(function(error) {
-     // Removed: console.log('Subscription error:', error);
-     
-     // Reset button
-     $btnLoader.style.display = 'none';
-     $btnText.style.display = 'inline-block';
-     $subscribeBtn.disabled = false;
-     
-     // Show error modal
-     document.getElementById('subscribeMessage').textContent = '❌ Subscription failed. Please try again later.';
-     $('#subscribeModal').modal('show');
-   });
- });
-</script>
 
 
 
@@ -392,13 +329,12 @@
 	<script src="js/jquery.ajaxchimp.min.js"></script>
 	<script src="js/mail-script.js"></script>
 	
-	<!-- EmailJS SDK with Integrity Check -->
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" integrity="sha384-7+8I3qB9BuoqPuMdBcf5UOGGKvJl0j2gfvRFVPlJ6Jk4cOWqGfVB7cJP7Wl/MDDL" crossorigin="anonymous"></script>
-
-	<!-- ✅ Better -->
-	<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" 
-        integrity="sha384-..." 
-        crossorigin="anonymous"></script>
+	<!-- EmailJS SDK -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+	<script src="js/emailjs-config.js"></script>
+	
+	<!-- Newsletter Subscription Handler (Centralized) -->
+	<script src="js/newsletter.js"></script>
 	
 	<!--gmaps Js-->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
