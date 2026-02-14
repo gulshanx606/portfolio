@@ -1,0 +1,28 @@
+# Sensitive configuration files
+smtp_config.php
+js/emailjs-config.js
+
+# PHPMailer library
+phpmailer/
+
+# Vendor directory (if using Composer)
+vendor/
+
+# Environment files
+.env
+.env.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+error_log

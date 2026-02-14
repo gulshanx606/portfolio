@@ -1,0 +1,8 @@
+<?php
+// Copy this file to smtp_config.php and set real values, or set env vars SMTP_USER and SMTP_PASS
+return [
+    'SMTP_USER' => 'your@gmail.com', // your Gmail address
+    'SMTP_PASS' => 'your-app-password', // use an App Password (recommended)
+    'FROM_EMAIL' => 'no-reply@yourdomain.com',
+    'OWNER_EMAIL' => 'rockybd1995@gmail.com', // where contact form should be sent
+];

@@ -1,0 +1,14 @@
+// EmailJS Configuration Example
+// Copy this file to emailjs-config.js and replace with your actual values
+
+(function() {
+    // Initialize EmailJS with your Public Key
+    emailjs.init('YOUR_PUBLIC_KEY'); // Get from https://dashboard.emailjs.com/admin/account
+    
+    // Store service and template IDs
+    window.EMAILJS_CONFIG = {
+        serviceId: 'YOUR_SERVICE_ID',           // Get from https://dashboard.emailjs.com/admin
+        templateId: 'YOUR_TEMPLATE_ID',         // Notification to you - Get from https://dashboard.emailjs.com/admin/templates
+        autoReplyTemplateId: 'YOUR_AUTOREPLY_TEMPLATE_ID'  // Optional: Acknowledgment to visitor
+    };
+})();

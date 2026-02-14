@@ -5,7 +5,8 @@
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="img/favicon.png" type="image/png">
+	<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+	<link rel="icon" type="image/png" href="img/favicon.png">
 	<title>Contact - Gulshan Kumar | Data Engineer</title>
 	<!-- Bootstrap CSS -->
      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -107,7 +108,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-8">
-                    <form class="row contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+                    <form class="row contact_form" id="contactForm" novalidate="novalidate">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Name">
@@ -140,8 +141,11 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" value="submit" class="primary_btn">
-                                <span>Send message</span>
+                            <button type="submit" value="submit" class="primary_btn" id="sendBtn">
+                                <span class="btn-text">Send message</span>
+                                <span class="btn-loader" style="display: none;">
+                                    <i class="fa fa-spinner fa-spin"></i> Sending...
+                                </span>
                             </button>
                         </div>
                     </form>
@@ -197,6 +201,54 @@
         </div>
     </section>
     <!--================Contact Area =================-->
+    
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: #1a1a1a; border: 2px solid #00ff9d; border-radius: 10px;">
+                <div class="modal-header" style="border-bottom: 1px solid #00ff9d;">
+                    <h5 class="modal-title" style="color: #00ff9d;">
+                        <i class="fa fa-check-circle"></i> Success!
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #00ff9d; opacity: 1;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: #e0e0e0; padding: 30px; text-align: center;">
+                    <i class="fa fa-check-circle" style="font-size: 50px; color: #00ff9d; margin-bottom: 15px;"></i>
+                    <p style="font-size: 18px; margin-bottom: 10px;">Message sent successfully!</p>
+                    <p style="color: #b4b4b4;">Thank you for contacting us. We'll get back to you soon.</p>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #444;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background: #00ff9d; color: #1a1a1a; border: none;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: #1a1a1a; border: 2px solid #ff4444; border-radius: 10px;">
+                <div class="modal-header" style="border-bottom: 1px solid #ff4444;">
+                    <h5 class="modal-title" style="color: #ff4444;">
+                        <i class="fa fa-exclamation-circle"></i> Error!
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #ff4444; opacity: 1;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: #e0e0e0; padding: 30px; text-align: center;">
+                    <i class="fa fa-exclamation-circle" style="font-size: 50px; color: #ff4444; margin-bottom: 15px;"></i>
+                    <p style="font-size: 18px; margin-bottom: 10px;">Failed to send message</p>
+                    <p style="color: #b4b4b4;" id="errorMessage">Please try again later.</p>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #444;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background: #ff4444; color: #ffffff; border: none;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
         
         <!--================Footer Area =================-->
 	<footer class="footer_area">
@@ -243,6 +295,15 @@
     <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
     <script src="js/jquery.ajaxchimp.min.js"></script>
     <script src="js/mail-script.js"></script>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="js/emailjs-config.js"></script>
+    
+    <!-- Form Validation and Contact Handler -->
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/contact.js"></script>
+    
     <!--gmaps Js-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
     <script src="js/gmaps.min.js"></script>
