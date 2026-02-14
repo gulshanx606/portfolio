@@ -230,7 +230,12 @@
          <div class="subcribe-form" id="mc_embed_signup">
            <form novalidate class="subscription relative">
              <input name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'" required type="email">
-             <button class="primary-btn hover d-inline" type="submit">Get Started</button>
+             <button class="primary-btn hover d-inline" id="subscribeBtn" type="submit" style="position: relative; overflow: hidden; min-width: 140px;">
+               <span class="btn-text">Get Started</span>
+               <span class="btn-loader" style="display: none; color: #00ff9d; font-weight: bold;">
+                 <i class="fa fa-spinner fa-spin"></i> Sending...
+               </span>
+             </button>
              <div class="info"></div>
            </form>
          </div>
@@ -240,65 +245,88 @@
  </div>
 </section>
 
-<!-- ✅ Popup Modal -->
-<div id="subscribe-popup" style="
- display: none;
- position: fixed;
- top: 50%; left: 50%;
- transform: translate(-50%, -50%);
- background: white;
- border-radius: 12px;
- box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
- padding: 30px;
- z-index: 9999;
- width: 90%;
- max-width: 400px;
- text-align: center;
- font-family: Arial, sans-serif;
-">
- <button onclick="closeSubscribePopup()" style="
-   position: absolute;
-   top: 10px;
-   right: 15px;
-   background: transparent;
-   border: none;
-   font-size: 18px;
-   cursor: pointer;
-   color: #555;
- ">&times;</button>
- <div id="subscribe-message" style="font-size: 18px; color: #333;">🎉 Thank you!</div>
+<!-- ✅ Subscription Modal (Dark Theme) -->
+<div id="subscribeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background: #1a1a1a; border: 2px solid #00ff9d; border-radius: 12px;">
+      <div class="modal-header" style="border-bottom: 1px solid #00ff9d;">
+        <h5 class="modal-title" id="subscribeModalLabel" style="color: #00ff9d;">Newsletter Subscription</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #00ff9d;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="color: #e0e0e0;">
+        <div id="subscribeMessage" style="font-size: 16px; text-align: center;">Thank you for subscribing!</div>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid #00ff9d;">
+        <button type="button" class="btn" style="background: #00ff9d; color: #000; font-weight: bold;" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ✅ Script -->
 <script>
- function showSubscribePopup(message) {
-   const popup = document.getElementById("subscribe-popup");
-   const msg = document.getElementById("subscribe-message");
-   msg.innerHTML = message;
-   popup.style.display = "block";
 
-   setTimeout(() => {
-     popup.style.display = "none";
-   }, 10000);
- }
-
- function closeSubscribePopup() {
-   document.getElementById("subscribe-popup").style.display = "none";
- }
 
  document.querySelector(".subscription").addEventListener("submit", function (e) {
    e.preventDefault();
 
    const emailInput = this.querySelector("input[name='EMAIL']");
    const email = emailInput.value.trim();
+   const $subscribeBtn = document.getElementById('subscribeBtn');
+   const $btnText = $subscribeBtn.querySelector('.btn-text');
+   const $btnLoader = $subscribeBtn.querySelector('.btn-loader');
 
    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-     showSubscribePopup("⚠️ Please enter a valid email address.");
+     document.getElementById('subscribeMessage').textContent = '⚠️ Please enter a valid email address.';
+     $('#subscribeModal').modal('show');
      return;
    }
 
-   // 👉 For now, just show the network error (skip real sending)
-   showSubscribePopup("⚠️ Network error. Please try again.");
+   // Show loader, disable button
+   $btnText.style.display = 'none';
+   $btnLoader.style.display = 'inline-block';
+   $subscribeBtn.disabled = true;
+
+   // Send subscription notification via EmailJS
+   emailjs.send(
+     window.EMAILJS_CONFIG.serviceId,
+     window.EMAILJS_CONFIG.templateId,
+     {
+       name: 'New Subscriber',
+       email: email,
+       phone: 'N/A',
+       service: 'Newsletter',
+       message: 'New subscriber email: ' + email
+     }
+   ).then(function(response) {
+     console.log('Subscription successful!', response.status);
+     
+     // Reset button
+     $btnLoader.style.display = 'none';
+     $btnText.style.display = 'inline-block';
+     $subscribeBtn.disabled = false;
+     
+     // Clear input
+     emailInput.value = '';
+     
+     // Show success modal
+     document.getElementById('subscribeMessage').innerHTML = '🎉 <strong>Thank you!</strong><br>You have been subscribed to our newsletter.';
+     $('#subscribeModal').modal('show');
+     
+   }).catch(function(error) {
+     console.log('Subscription error:', error);
+     
+     // Reset button
+     $btnLoader.style.display = 'none';
+     $btnText.style.display = 'inline-block';
+     $subscribeBtn.disabled = false;
+     
+     // Show error modal
+     document.getElementById('subscribeMessage').textContent = '❌ Subscription failed. Please try again later.';
+     $('#subscribeModal').modal('show');
+   });
  });
 </script>
 
@@ -358,6 +386,11 @@
 	<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
 	<script src="js/jquery.ajaxchimp.min.js"></script>
 	<script src="js/mail-script.js"></script>
+	
+	<!-- EmailJS SDK -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+	<script src="js/emailjs-config.js"></script>
+	
 	<!--gmaps Js-->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="js/gmaps.min.js"></script>
